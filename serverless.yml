@@ -24,6 +24,7 @@ provider:
   #  SAMPLE_ENV_VAR: ${env:SAMPLE_ENV_VAR}
   environment:
    tableName: notes
+   stripeSecretKey: ${env:STRIPE_SECRET_KEY}
   
   iamRoleStatements:
     - Effect: Allow
@@ -77,5 +78,13 @@ functions:
       - http:
           path: notes/{id}
           method: delete
+          cors: true
+          authorizer: aws_iam
+  billing:
+    handler: handlers/billing.main
+    events:
+      - http:
+          path: billing
+          method: post
           cors: true
           authorizer: aws_iam
